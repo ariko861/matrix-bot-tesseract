@@ -2,8 +2,9 @@
 
 Un bot pour récupérer l'évangile et les lectures du jour sur aelf.org
 
-Changer la configuration dans config/default.yaml.
-Changer le serveur Matrix et ajouter votre "access-token" en le faisant correspondre à l'utilisateur Matrix que vous souhaitez utiliser en tant que bot.
+- Remplacer `config/example.yaml` par `config/default.yaml`
+- Changer la configuration dans config/default.yaml.
+- Changer le serveur Matrix et ajouter votre "access-token" en le faisant correspondre à l'utilisateur Matrix que vous souhaitez utiliser en tant que bot.
 
 ### Installation :
 
