@@ -9,8 +9,8 @@ export async function runMesseCommand(roomId: string, args: string[], client: Ma
     
     var todayDate = new Date().toISOString().slice(0,10);
     var url = 'https://api.aelf.org/v1/messes/'+ todayDate + '/' + config.country ;
-    let text = "Lectures de la Messe\n";
-    let html = "<h3>Lectures de la Messe</h3>\n";
+    let text = "";
+    let html = "";
 
     let displayLecture = function(lecture) {
         let thislecture = {
@@ -50,7 +50,11 @@ export async function runMesseCommand(roomId: string, args: string[], client: Ma
             if ( lecture_type === "psaume" ) {
                 lien = 'https://www.aelf.org/bible/Ps/' + references[0];
             } else {
-                lien = 'https://www.aelf.org/bible/' + references[0] + '/' + references[1];
+                if ( references[0] === "1" || references[0] === "2" || references[0] === "3" ) {
+                    lien = 'https://www.aelf.org/bible/' + references[0] + references[1] + '/' + references[2];
+                } else {
+                    lien = 'https://www.aelf.org/bible/' + references[0] + '/' + references[1];
+                }
             }
             
             html += '<h4>'+ lecture_type__display +'</h4>' + 
@@ -77,7 +81,8 @@ export async function runMesseCommand(roomId: string, args: string[], client: Ma
         } else if (res.statusCode !== 200) {
         console.log('Status:', res.statusCode);
         } else {
-            
+            text += data.informations.jour_liturgique_nom + "\n";
+            html += "<h3>" + data.informations.jour_liturgique_nom + "</h3>\n";
             let lectures = data.messes[0].lectures;
             lectures.forEach(displayLecture);
                    
