@@ -1,5 +1,5 @@
 config/*
-!config/default.yaml
+!config/example.yaml
 lib/
 storage/
 
