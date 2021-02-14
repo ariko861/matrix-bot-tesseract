@@ -24,4 +24,4 @@ Lancer `docker build -t <user>/<nom-de-l'image> .`
 
 La nouvelle image docker devrait être apparue dans `docker images`.
 
-La lancer simplement avec `docker run -d -name <nom-du-container> <user>/<nom-de-l'image>`
+La lancer simplement avec `docker run -d --name <nom-du-container> <user>/<nom-de-l'image>`
