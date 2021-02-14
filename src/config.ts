@@ -5,6 +5,11 @@ interface IConfig {
     accessToken: string;
     autoJoin: boolean;
     dataPath: string;
+    country: string;
+    profile: {
+        displayname: string;
+        avatar?: boolean;
+    }
 }
 
 export default <IConfig>config;

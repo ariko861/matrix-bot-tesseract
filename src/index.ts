@@ -7,6 +7,7 @@ import {
     SimpleFsStorageProvider
 } from "matrix-bot-sdk";
 import * as path from "path";
+import {promises as fs} from "fs";
 import config from "./config";
 import CommandHandler from "./commands/handler";
 
@@ -35,6 +36,21 @@ const commands = new CommandHandler(client);
 
 // This is the startup closure where we give ourselves an async context
 (async function () {
+    const myUserId = await client.getUserId();
+    const profile = await client.getUserProfile(myUserId);
+    if (!profile || profile.displayname !== config.profile.displayname) {
+        LogService.info("Main", "Displayname not equal to configured displayname. Setting..");
+        await client.setDisplayName(config.profile.displayname);
+        LogService.info("Main", "Displayname set");
+    }
+    if (profile && config.profile.avatar && !profile.avatar_url) {
+        LogService.info("Main", "Avatar not set on profile. Setting..");
+        const avatarData = await fs.readFile("./data/avatar.png");
+        const mxc = await client.uploadContent(avatarData, "image/png", "avatar.png");
+        await client.setAvatarUrl(mxc);
+        LogService.info("Main", "Avatar set");
+    }
+    
     await commands.start();
     LogService.info("index", "Starting sync...");
     await client.start(); // This blocks until the bot is killed

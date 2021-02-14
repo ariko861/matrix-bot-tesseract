@@ -1,10 +1,13 @@
 import { LogService, MatrixClient, MessageEvent, RichReply, UserID } from "matrix-bot-sdk";
 import { runHelloCommand } from "./hello";
+import { runMesseCommand } from "./messe";
+import { runAutoCommand } from "./auto";
+
 import * as htmlEscape from "escape-html";
 
 // The prefix required to trigger the bot. The bot will also respond
 // to being pinged directly.
-export const COMMAND_PREFIX = "!bot";
+export const COMMAND_PREFIX = "!aelf";
 
 // This is where all of our commands will be handled
 export default class CommandHandler {
@@ -58,13 +61,20 @@ export default class CommandHandler {
         try {
             if (args[0] === "hello") {
                 return runHelloCommand(roomId, event, args, this.client);
+            } else if (args[0] === "messe" || args[0] === "evangile" || args[0] === "lecture" || args[0] === "psaume"){
+                return runMesseCommand(roomId, args, this.client);
+            } else if (args[0] === "auto"){
+                return runAutoCommand(roomId, args, this.client);
             } else {
                 const help = "" +
-                    "!bot hello [user]     - Say hello to a user.\n" +
-                    "!bot help             - This menu\n";
+                    "!aelf messe [tout]     - Afficher les lectures de la messe du jour ( ajouter 'tout' pour obtenir le contenu des textes également ).\n" +
+                    "!aelf evangile     - Afficher l'évangile du jour.\n" +
+                    "!aelf lecture     - Afficher la première lecture du jour.\n" +
+                    "!aelf psaume     - Afficher le psaume de la messe du jour.\n" +
+                    "!aelf help             - Afficher ce menu d'aide\n";
 
-                const text = `Help menu:\n${help}`;
-                const html = `<b>Help menu:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
+                const text = `Menu d'aide:\n${help}`;
+                const html = `<b>Menu d'aide:</b><br /><pre><code>${htmlEscape(help)}</code></pre>`;
                 const reply = RichReply.createFor(roomId, ev, text, html); // Note that we're using the raw event, not the parsed one!
                 reply["msgtype"] = "m.notice"; // Bots should always use notices
                 return this.client.sendMessage(roomId, reply);
