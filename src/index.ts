@@ -21,41 +21,42 @@ LogService.setLevel(LogLevel.DEBUG);
 // Print something so we know the bot is working
 LogService.info("index", "Bot starting...");
 
-// Prepare the storage system for the bot
-const storage = new SimpleFsStorageProvider(path.join(config.dataPath, "bot.json"));
+(async function () {    // This is the startup closure where we give ourselves an async context
 
-let client: MatrixClient;
-if (config.pantalaimon.use) {
-    const pantalaimon = new PantalaimonClient(config.homeserverUrl, storage);
-    client = await pantalaimon.createClientWithCredentials(config.pantalaimon.username, config.pantalaimon.password);
-} else {
-    client = new MatrixClient(config.homeserverUrl, config.accessToken, storage);
-}
+    // Prepare the storage system for the bot
+    const storage = new SimpleFsStorageProvider(path.join(config.dataPath, "bot.json"));
 
-// Setup the autojoin mixin (if enabled)
-if (config.autoJoin) {
-    const userPermitted = config.permissions.invite;
-    if ( userPermitted.includes('*') ) {
-        AutojoinRoomsMixin.setupOnClient(client);
+    let client: MatrixClient;
+    if (config.pantalaimon.use) {
+        const pantalaimon = new PantalaimonClient(config.homeserverUrl, storage);
+        client = await pantalaimon.createClientWithCredentials(config.pantalaimon.username, config.pantalaimon.password);
     } else {
-        client.on("room.invite", (roomId: string, inviteEvent: any) => {
-            let sender = inviteEvent["sender"];
-            let senderServer = sender.split(":");
-            
-            if ( userPermitted.includes(sender) || userPermitted.includes("*:" + senderServer[1]) ) {
-                return client.joinRoom(roomId);
-            } else {
-                return client.leaveRoom(roomId);
-            }
-        });
+        client = new MatrixClient(config.homeserverUrl, config.accessToken, storage);
     }
-}
 
-// Prepare the command handler
-const commands = new CommandHandler(client);
+    // Setup the autojoin mixin (if enabled)
+    if (config.autoJoin) {
+        const userPermitted = config.permissions.invite;
+        if ( userPermitted.includes('*') ) {
+            AutojoinRoomsMixin.setupOnClient(client);
+        } else {
+            client.on("room.invite", (roomId: string, inviteEvent: any) => {
+                let sender = inviteEvent["sender"];
+                let senderServer = sender.split(":");
+                
+                if ( userPermitted.includes(sender) || userPermitted.includes("*:" + senderServer[1]) ) {
+                    return client.joinRoom(roomId);
+                } else {
+                    return client.leaveRoom(roomId);
+                }
+            });
+        }
+    }
 
-// This is the startup closure where we give ourselves an async context
-(async function () {
+    // Prepare the command handler
+    const commands = new CommandHandler(client);
+
+
     const myUserId = await client.getUserId();
     const profile = await client.getUserProfile(myUserId);
     if (!profile || profile.displayname !== config.profile.displayname) {
