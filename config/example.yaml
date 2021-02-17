@@ -12,9 +12,16 @@ autoJoin: true
 # Location on disk for where to store various bot information.
 dataPath: "storage"
 
-# Pays d'usage parmi les suivants : afrique|belgique|canada|france|luxembourg|romain|suisse
-country: "france"
+# Langue d'usage en code accepté par tesseract eng|fra
+language: "eng"
+
+# Permissions d'utilisation du bot. Dans invite qui peut l'inviter, dans use qui peut l'utiliser dans un salon.
+permissions:
+    invite: ["@example:matrix.org", "*:example.com"]
+    use: ["*"]
 
 profile:
-    displayname: "AELF Bot"
+    displayname: "Tesseract Bot"
     avatar: true
+
+    

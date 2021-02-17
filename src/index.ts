@@ -28,7 +28,21 @@ const client = new MatrixClient(config.homeserverUrl, config.accessToken, storag
 
 // Setup the autojoin mixin (if enabled)
 if (config.autoJoin) {
-    AutojoinRoomsMixin.setupOnClient(client);
+    const userPermitted = config.permissions.invite;
+    if ( userPermitted.includes('*') ) {
+        AutojoinRoomsMixin.setupOnClient(client);
+    } else {
+        client.on("room.invite", (roomId: string, inviteEvent: any) => {
+            let sender = inviteEvent["sender"];
+            let senderServer = sender.split(":");
+            
+            if ( userPermitted.includes(sender) || userPermitted.includes("*:" + senderServer[1]) ) {
+                return client.joinRoom(roomId);
+            } else {
+                return client.leaveRoom(roomId);
+            }
+        });
+    }
 }
 
 // Prepare the command handler

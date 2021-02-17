@@ -1,6 +1,6 @@
 # `matrix-aelf-bot`
 
-Un bot pour récupérer l'évangile et les lectures du jour sur aelf.org
+Un bot pour renvoyer les caractères reconnus par tesseract-ocr des images envoyées.
 
 - Remplacer `config/example.yaml` par `config/default.yaml`
 - Changer la configuration dans config/default.yaml.
@@ -16,7 +16,7 @@ Un bot pour récupérer l'évangile et les lectures du jour sur aelf.org
 
 Le bot devrait fonctionner.
 
-Inviter le bot à un salon non chiffré, puis envoyer le message `!aelf help` pour accéder à la liste des commandes.
+Inviter le bot à un salon non chiffré, puis envoyer le message `!tesseract help` pour accéder à la liste des commandes.
 
 ### Docker :
 

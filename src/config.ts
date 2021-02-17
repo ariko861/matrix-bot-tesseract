@@ -5,7 +5,11 @@ interface IConfig {
     accessToken: string;
     autoJoin: boolean;
     dataPath: string;
-    country: string;
+    language: string;
+    permissions: {
+        invite: any,
+        use: any,
+    }
     profile: {
         displayname: string;
         avatar?: boolean;

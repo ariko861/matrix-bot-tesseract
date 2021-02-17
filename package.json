@@ -1,21 +1,21 @@
 {
-  "name": "matrix-bot-aelf",
+  "name": "matrix-bot-tesseract",
   "version": "0.1.0",
   "author": "Ariko861",
   "license": "Apache-2.0",
   "description": "Un bot pour récupérer des informations sur aelf.org",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ariko861/matrix-bot-aelf.git"
+    "url": "git+https://github.com/ariko861/matrix-bot-tesseract.git"
   },
   "bugs": {
-    "url": "https://github.com/ariko861/matrix-bot-aelf/issues"
+    "url": "https://github.com/ariko861/matrix-bot-tesseract/issues"
   },
-  "homepage": "https://github.com/ariko861/matrix-bot-aelf#readme",
+  "homepage": "https://github.com/ariko861/matrix-bot-tesseract#readme",
   "keywords": [
     "matrix",
     "bot",
-    "aelf"
+    "tesseract"
   ],
   "main": "lib/index.js",
   "scripts": {
@@ -28,7 +28,7 @@
     "escape-html": "^1.0.3",
     "js-yaml": "^3.13.1",
     "matrix-bot-sdk": "^0.5.3",
-    "node-cron": "^2.0.3"
+    "node-tesseract-ocr": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^12.12.37",
