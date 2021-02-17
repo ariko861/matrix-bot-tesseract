@@ -48,7 +48,7 @@ export default class CommandHandler {
         if (event.isRedacted) return; // Ignore redacted events that come through
         if (event.sender === this.userId) return; // Ignore ourselves
         if (event.messageType !== "m.text" && event.messageType !== "m.image") return; // Ignore non-text messages
-        const userPermitted = config.permissions.invite;
+        const userPermitted = config.permissions.use;
         let senderServerAndName = event.sender.split(":");
         const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*" + senderServerAndName[1]) || userPermitted.includes("*") );
         
