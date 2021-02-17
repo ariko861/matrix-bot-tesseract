@@ -50,7 +50,7 @@ export default class CommandHandler {
         if (event.messageType !== "m.text" && event.messageType !== "m.image") return; // Ignore non-text messages
         const userPermitted = config.permissions.invite;
         let senderServerAndName = event.sender.split(":");
-        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*" + senderServerAndName[1]) );
+        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*" + senderServerAndName[1]) || userPermitted.includes("*") );
         
         if (event.messageType === "m.image") { // Appel cette fonction si le message est une image
             if (!userIsAllowed) return;
