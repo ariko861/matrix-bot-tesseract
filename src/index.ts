@@ -3,6 +3,7 @@ import {
     LogLevel,
     LogService,
     MatrixClient,
+    PantalaimonClient,
     RichConsoleLogger,
     SimpleFsStorageProvider
 } from "matrix-bot-sdk";
@@ -23,8 +24,13 @@ LogService.info("index", "Bot starting...");
 // Prepare the storage system for the bot
 const storage = new SimpleFsStorageProvider(path.join(config.dataPath, "bot.json"));
 
-// Create the client
-const client = new MatrixClient(config.homeserverUrl, config.accessToken, storage);
+let client: MatrixClient;
+if (config.pantalaimon.use) {
+    const pantalaimon = new PantalaimonClient(config.homeserverUrl, storage);
+    client = await pantalaimon.createClientWithCredentials(config.pantalaimon.username, config.pantalaimon.password);
+} else {
+    client = new MatrixClient(config.homeserverUrl, config.accessToken, storage);
+}
 
 // Setup the autojoin mixin (if enabled)
 if (config.autoJoin) {

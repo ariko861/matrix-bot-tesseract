@@ -1,27 +1,27 @@
 # `matrix-tesseract-bot`
 
-Un bot pour renvoyer les caractères reconnus par tesseract-ocr des images envoyées.
+A bot to run an OCR with tesseract on image sent to it.
 
-- Remplacer `config/example.yaml` par `config/default.yaml`
-- Changer la configuration dans config/default.yaml.
-- Changer le serveur Matrix et ajouter votre "access-token" en le faisant correspondre à l'utilisateur Matrix que vous souhaitez utiliser en tant que bot.
+"tesseract-ocr" package must be installed, though it is included in the Dockerfile.
+
+- Replace `config/example.yaml` by `config/default.yaml`
+- Change configuration in config/default.yaml.
+- Change the Matrix server and add the "access-token" of the bot user of your server.
 
 ### Installation :
 
-- lancer `npm install`
+- run `npm install`
 
 - `npm run build`
 
-- Puis `npm run start:dev`
+- then `npm run start:dev`
 
-Le bot devrait fonctionner.
+And it should work
 
-Inviter le bot à un salon non chiffré, puis envoyer le message `!tesseract help` pour accéder à la liste des commandes.
+Invite the bot in a non encrypted room, then send the message `!tesseract help` to access to commands list.
 
 ### Docker :
 
-Lancer `docker build -t <user>/<nom-de-l'image> .`
+Run `docker build -t <user>/<image-name> .`
 
-La nouvelle image docker devrait être apparue dans `docker images`.
-
-La lancer simplement avec `docker run -d --name <nom-du-container> <user>/<nom-de-l'image>`
+Then `docker run -d --name <container-name> <user>/<image-name>`

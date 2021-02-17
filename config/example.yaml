@@ -2,6 +2,11 @@
 # is where clients would be connecting to in order to send messages.
 homeserverUrl: "https://matrix.org"
 
+# set to true if use of a pantalaimon server
+pantalaimon: 
+    use: false
+    username: "<the-bot-matrix-username-for-pantalaimon>"
+    password: "<bot-password>"
 # An access token for the bot to use. Learn how to get an access token
 # at https://t2bot.io/docs/access_tokens
 accessToken: "<your-access-token-here>"
@@ -23,5 +28,3 @@ permissions:
 profile:
     displayname: "Tesseract Bot"
     avatar: true
-
-    
