@@ -4,7 +4,9 @@ RUN apt-get -y install tesseract-ocr
 RUN apt-get -y install tesseract-ocr-fra
 RUN apt-get -y install tesseract-ocr-eng
 
-FROM node:13-slim
+RUN curl -fsSL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
 WORKDIR /app
 COPY . .
 RUN npm install && \
