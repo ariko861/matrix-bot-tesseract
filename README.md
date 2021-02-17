@@ -1,4 +1,4 @@
-# `matrix-aelf-bot`
+# `matrix-tesseract-bot`
 
 Un bot pour renvoyer les caractères reconnus par tesseract-ocr des images envoyées.
 
