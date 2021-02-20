@@ -50,7 +50,7 @@ export default class CommandHandler {
         if (event.messageType !== "m.text" && event.messageType !== "m.image") return; // Ignore non-text messages
         const userPermitted = config.permissions.use;
         let senderServerAndName = event.sender.split(":");
-        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*" + senderServerAndName[1]) || userPermitted.includes("*") );
+        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*:" + senderServerAndName[1]) || userPermitted.includes("*") );
         
         if (event.messageType === "m.image") { // Appel cette fonction si le message est une image
             if (!userIsAllowed) return;
@@ -91,22 +91,26 @@ export default class CommandHandler {
             
         } else {
             
-
             // Ensure that the event is a command before going on. We allow people to ping
             // the bot as well as using our COMMAND_PREFIX.
             const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `${this.displayName}:`, `${this.userId}:`];
             const prefixUsed = prefixes.find(p => event.textBody.startsWith(p));
-            if (!prefixUsed) {
-                const bridge = new MatrixBridge();
-                return; // Not a command (as far as we're concerned)
-                
-            }
-
-            // Check to see what the arguments were to the command
-            const args = event.textBody.substring(prefixUsed.length).trim().split(' ');
+            
+            let args = [];
 
             // Try and figure out what command the user ran, defaulting to help
             try {
+                if (!prefixUsed) {
+                    const roomMembers = await this.client.getJoinedRoomMembers(roomId);   
+                    if ( roomMembers.length > 2 ) { // Check if the room is a direct message room
+                        return; 
+                    }
+                    args = event.textBody.trim().split(' ');
+                } else {
+                    args = event.textBody.substring(prefixUsed.length).trim().split(' ');
+                }
+                         
+                
                 if (!userIsAllowed) { // Send a message refusing authorization if user is not allowed
                     const notAuthorized = "Désolé, vous n'avez pas l'autorisation de consulter ce Bot";
                     
@@ -117,6 +121,7 @@ export default class CommandHandler {
                     return this.client.sendMessage(roomId, reply);
                 }
                 
+                // Check to see what the arguments were to the command
                 if (args[0] === "hello") {
                     return runHelloCommand(roomId, event, args, this.client);
                 } else {
