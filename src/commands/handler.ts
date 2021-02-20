@@ -109,7 +109,11 @@ export default class CommandHandler {
                 } else {
                     args = event.textBody.substring(prefixUsed.length).trim().split(' ');
                 }
-                         
+            } catch (e) {
+                LogService.error("getJoinedRoomMembers error", e)
+            }
+                 
+            try {
                 
                 if (!userIsAllowed) { // Send a message refusing authorization if user is not allowed
                     const notAuthorized = "Désolé, vous n'avez pas l'autorisation de consulter ce Bot";
