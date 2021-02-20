@@ -48,9 +48,11 @@ export default class CommandHandler {
         if (event.isRedacted) return; // Ignore redacted events that come through
         if (event.sender === this.userId) return; // Ignore ourselves
         if (event.messageType !== "m.text" && event.messageType !== "m.image") return; // Ignore non-text messages
+        
+        // This part is to see if the user is allowed to use the bot.
         const userPermitted = config.permissions.use;
         let senderServerAndName = event.sender.split(":");
-        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*" + senderServerAndName[1]) || userPermitted.includes("*") );
+        const userIsAllowed = ( userPermitted.includes(event.sender) || userPermitted.includes("*:" + senderServerAndName[1]) || userPermitted.includes("*") );
         
         if (event.messageType === "m.image") { // Appel cette fonction si le message est une image
             if (!userIsAllowed) return;
@@ -96,7 +98,9 @@ export default class CommandHandler {
             // the bot as well as using our COMMAND_PREFIX.
             const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `${this.displayName}:`, `${this.userId}:`];
             const prefixUsed = prefixes.find(p => event.textBody.startsWith(p));
-            if (!prefixUsed) return; // Not a command (as far as we're concerned)
+            if (!prefixUsed) {
+                return; // Not a command (as far as we're concerned)
+            }
 
             // Check to see what the arguments were to the command
             const args = event.textBody.substring(prefixUsed.length).trim().split(' ');
@@ -116,6 +120,7 @@ export default class CommandHandler {
                 if (args[0] === "hello") {
                     return runHelloCommand(roomId, event, args, this.client);
                 } else {
+                    
                     const help = "Envoyez une photo dans ce salon pour lancer la reconnaissance de caractères.";
 
                     const text = `${help}`;

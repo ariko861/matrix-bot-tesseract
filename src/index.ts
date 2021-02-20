@@ -25,7 +25,8 @@ LogService.info("index", "Bot starting...");
 
     // Prepare the storage system for the bot
     const storage = new SimpleFsStorageProvider(path.join(config.dataPath, "bot.json"));
-
+    
+    // Create the client
     let client: MatrixClient;
     if (config.pantalaimon.use) {
         const pantalaimon = new PantalaimonClient(config.homeserverUrl, storage);
