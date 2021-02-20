@@ -1,4 +1,4 @@
-import { LogService, MatrixClient, MessageEvent, RichReply, UserID } from "matrix-bot-sdk";
+import { LogService, MatrixBridge, MatrixClient, MessageEvent, RichReply, UserID } from "matrix-bot-sdk";
 import { runHelloCommand } from "./hello";
 import config from "../config";
 import * as htmlEscape from "escape-html";
@@ -96,7 +96,11 @@ export default class CommandHandler {
             // the bot as well as using our COMMAND_PREFIX.
             const prefixes = [COMMAND_PREFIX, `${this.localpart}:`, `${this.displayName}:`, `${this.userId}:`];
             const prefixUsed = prefixes.find(p => event.textBody.startsWith(p));
-            if (!prefixUsed) return; // Not a command (as far as we're concerned)
+            if (!prefixUsed) {
+                const bridge = new MatrixBridge();
+                return; // Not a command (as far as we're concerned)
+                
+            }
 
             // Check to see what the arguments were to the command
             const args = event.textBody.substring(prefixUsed.length).trim().split(' ');
